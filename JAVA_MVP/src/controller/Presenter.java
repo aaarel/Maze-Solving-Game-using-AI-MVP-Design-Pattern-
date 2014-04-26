@@ -9,7 +9,12 @@ import view.View;
 public class Presenter implements Observer {
 	//data members of View and Model type that will be initialized in the 'Main program'
 	View ui;
-	Model m;
+	Model model;
+	
+	public Presenter (Model m, View ui){
+		this.ui = new View(ui);
+		this.model = new Model(m);
+	}
 	
 
 	@Override
