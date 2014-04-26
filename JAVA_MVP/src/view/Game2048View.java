@@ -2,9 +2,9 @@ package view;
 
 import java.util.Observable;
 
-import model.Model;
-
 public class Game2048View extends Observable implements View  {	
+	
+	int[][] arr;
 
 	@Override
 	public void displayData(int[][] data) {

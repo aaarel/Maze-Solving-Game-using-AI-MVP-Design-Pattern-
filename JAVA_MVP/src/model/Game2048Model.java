@@ -3,6 +3,8 @@ package model;
 import java.util.Observable;
 
 public class Game2048Model extends Observable implements Model {
+	
+	int[][] arr;
 
 	@Override
 	public void moveUp() {
