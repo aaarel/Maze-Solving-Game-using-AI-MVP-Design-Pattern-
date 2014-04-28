@@ -2,8 +2,9 @@ package controller;
 
 import java.util.Observable;
 import java.util.Observer;
-
+import model.Game2048Model;
 import model.Model;
+import view.Game2048View;
 import view.View;
 
 public class Presenter implements Observer {
@@ -12,8 +13,8 @@ public class Presenter implements Observer {
 	Model model;
 	
 	public Presenter (Model m, View ui){
-		this.ui = new View(ui);
-		this.model = new Model(m);
+		this.ui = new Game2048View();
+		this.model = new Game2048Model();
 	}
 	
 
