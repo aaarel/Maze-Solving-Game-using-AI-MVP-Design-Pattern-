@@ -15,9 +15,7 @@ public class Presenter implements Observer {
 	public Presenter (View ui, Model m){
 		this.ui = new Game2048View();	//add C'tor with arg ui 
 		this.model = new Game2048Model(); //add C'tor with arg m
-		
  	}
-	
 	@Override
 	public void update(Observable o, Object arg) {
 		if(o==ui){

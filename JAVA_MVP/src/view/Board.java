@@ -33,6 +33,5 @@ public class Board extends Composite {
 			tiles[i][j].setLayoutData(new GridData(SWT.FILL,SWT.FILL,true,true) );
 			tiles[i][j].setValue(BoardData[i][j]);
 		}
-	}
-			
+	}		
 }
