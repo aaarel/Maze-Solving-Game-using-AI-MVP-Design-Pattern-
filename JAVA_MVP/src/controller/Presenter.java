@@ -13,9 +13,10 @@ public class Presenter implements Observer {
 	Model model;
 	
 	public Presenter (Model m, View ui){
-		this.ui = new Game2048View();
-		this.model = new Game2048Model();
-	}
+		this.ui = new Game2048View();	//add C'tor with arg ui 
+		this.model = new Game2048Model(); //add C'tor with arg m
+		
+ 	}
 	
 
 	@Override
