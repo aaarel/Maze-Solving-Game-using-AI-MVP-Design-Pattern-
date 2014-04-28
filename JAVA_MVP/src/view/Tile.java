@@ -18,7 +18,7 @@ public class Tile extends Canvas{
 	public void setValue(int value) {
 		this.value = value;
 		ChangeBackgroundColor(); //when value is changed - background color will change also
-		redraw();
+		redraw(); //invokes the method paintControl(..) which "draws" again the data
 	}
 	public Tile(Composite parent, int style) {
 		super(parent, style);
@@ -39,11 +39,6 @@ public class Tile extends Canvas{
 			}
 		});
 	}
-	
-	public void redraw(){
-		
-	}
-	
 	private void ChangeBackgroundColor()
 	{
 		if(value==0)
@@ -51,6 +46,4 @@ public class Tile extends Canvas{
 		else
 			setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
 	}
-	
-
 }
