@@ -1,5 +1,8 @@
 package model;
 
+import model.Game2048Model;
+
+
 public class run2048 {
 
 	public static void main(String[] args) {
@@ -8,7 +11,27 @@ public class run2048 {
 		board1.printBoard();
 		board1.moveUp();
 		board1.printBoard();
+		board1.fillRandomFreeCell();
+		board1.printBoard();
+		board1.moveRight();
+		board1.printBoard();
+		board1.fillRandomFreeCell();
+		board1.printBoard();
+		board1.moveLeft();
+		board1.printBoard();
+		board1.fillRandomFreeCell();
+		board1.printBoard();
+		board1.moveDown();
+		board1.printBoard();
+		board1.fillRandomFreeCell();
+		board1.printBoard();
+		board1.moveRight();
+		board1.printBoard();
 
+		board1.fillRandomFreeCell();
+		board1.printBoard();
+		board1.moveLeft();
+		board1.printBoard();
 	}
 
 }
