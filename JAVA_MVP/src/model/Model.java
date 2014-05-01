@@ -6,5 +6,7 @@ public interface Model {
 	public void moveLeft();
 	public void moveRight();
 	public int [][] getData();
+	
+	//test
 
 }

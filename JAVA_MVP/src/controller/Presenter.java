@@ -1,8 +1,10 @@
 package controller;
 
+import game2048.Game2048Model;
+
 import java.util.Observable;
 import java.util.Observer;
-import model.Game2048Model;
+
 import model.Model;
 import view.Game2048View;
 import view.View;

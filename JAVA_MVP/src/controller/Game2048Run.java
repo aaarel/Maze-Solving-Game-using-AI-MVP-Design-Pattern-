@@ -1,6 +1,6 @@
 package controller;
 
-import model.Game2048Model;
+import game2048.Game2048Model;
 import view.Game2048View;
 
 public class Game2048Run { //here the game will be run
