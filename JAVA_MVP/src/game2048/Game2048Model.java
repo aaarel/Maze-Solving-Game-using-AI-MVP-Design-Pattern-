@@ -3,27 +3,26 @@ package game2048;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
 import model.Model;
-//import model.Observer;
 
 public class Game2048Model extends Observable implements Model {
 	
 	private int[][] board;
 	@SuppressWarnings("unused")
 	private int sizeOfBoard = 4;
-	// data members used to keep track of free cells in order to randomize them
-	private Point[] freeCells;
-	private int lastFreeCell;
-	final int[] Choices = { 2,4 };
-	private int currentScore;
+	private Point[] freeCells; 		 // array data member used to keep track of free cells in order to randomize them
+	// reminder to self - switch the array of freeCells into arrayList
+	private int lastFreeCell;		 // data member used in order to keep track of last zeroed cell (and number of free cells) 
+	final int[] Choices = { 2,4 };   // array used to randomize the numbers (in this case 2 or 4)
+	private int currentScore;	     // keeps track of the score (updated by the move methods)
+	
+	
 	
 	// add a method to check if there are no neighbor matches - should be used when freeCells gets empty
 	
-	// private boolean insertRandomCell() {
-	// randomizes 2 or 4 and inserts into random free cell
-	// removes the cell from freeCells
 
 	@Override
 	public void moveUp() {
@@ -31,6 +30,9 @@ public class Game2048Model extends Observable implements Model {
 		for(int t=0; t<sizeOfBoard; t++)
 			consolidateUp(t);
 		updateFreeCells();
+		if (lastFreeCell == 0)
+			checkIfGameOver();
+		else fillRandomFreeCell();
 	}
 
 	@Override
@@ -39,6 +41,9 @@ public class Game2048Model extends Observable implements Model {
 		for(int t=0; t<sizeOfBoard; t++)
 			consolidateDown(t);
 		updateFreeCells();
+		if (lastFreeCell == 0)
+			checkIfGameOver();
+		else fillRandomFreeCell();
 	}
 
 	@Override
@@ -47,6 +52,9 @@ public class Game2048Model extends Observable implements Model {
 		for(int t=0; t<sizeOfBoard; t++)
 			consolidateRight(t);
 		updateFreeCells();
+		if (lastFreeCell == 0)
+			checkIfGameOver();
+		else fillRandomFreeCell();
 	}
 
 	@Override
@@ -55,19 +63,9 @@ public class Game2048Model extends Observable implements Model {
 		for(int t=0; t<sizeOfBoard; t++)
 			consolidateLeft(t);
 		updateFreeCells();
-	}
-
-	@Override
-	public int[][] getData() {
-		return null;
-	}
-
-	public int[][] getBoard() {
-		return board;
-	}
-	 
-	public void setBoard(int[][] board) {
-		this.board = board;
+		if (lastFreeCell == 0)
+			checkIfGameOver();
+		else fillRandomFreeCell();
 	}
 
 	public void initBoard() {
@@ -76,8 +74,11 @@ public class Game2048Model extends Observable implements Model {
 		freeCells = new Point[(int)Math.pow(sizeOfBoard,2)];
 		initFreeCells();
 		
-		initialFillCell();
-		lastFreeCell = 0;
+		//initialFillCell();
+		lastFreeCell = (int)Math.pow(sizeOfBoard,2)-1;
+		fillRandomFreeCell();
+		fillRandomFreeCell();
+		/*lastFreeCell = 0;
 		
 		
 		for(int i=0;i<sizeOfBoard;i++)
@@ -89,11 +90,11 @@ public class Game2048Model extends Observable implements Model {
 					freeCells[lastFreeCell].x = j;					
 					lastFreeCell++;
 				}
-			}
+			}*/
 		
 	}
 	
-	void consolidateUp(int col) {	
+	private void consolidateUp(int col) {	
 		int row = 0;
 		while (row < sizeOfBoard-1){
 			if ((board[row][col]!=0)&&(board[row][col]==board[row+1][col])){
@@ -132,7 +133,7 @@ public class Game2048Model extends Observable implements Model {
 	}
 	
 	
-	void consolidateDown(int col) {	
+	private void consolidateDown(int col) {	
 		int row = sizeOfBoard-1;
 		while (row > 0){
 			if ((board[row][col]!=0)&&(board[row][col]==board[row-1][col])){
@@ -170,7 +171,7 @@ public class Game2048Model extends Observable implements Model {
 		System.out.println(currentScore);
 	}
 	
-	void consolidateRight(int row) {	
+	private void consolidateRight(int row) {	
 		int col = sizeOfBoard-1;
 		while (col > 0){
 			if ((board[row][col]!=0)&&(board[row][col]==board[row][col-1])){
@@ -208,7 +209,7 @@ public class Game2048Model extends Observable implements Model {
 		System.out.println(currentScore);
 	}
 	
-	void consolidateLeft(int row) {	
+	private void consolidateLeft(int row) {	
 		int col = 0;
 		while (col < sizeOfBoard-1){
 			if ((board[row][col]!=0)&&(board[row][col]==board[row][col+1])){
@@ -269,18 +270,18 @@ public class Game2048Model extends Observable implements Model {
 			updateFreeCells();
 			currentScore += choice;
 		}
-		
+		updateFreeCells();
 		return true;
 	}
 	
-	void printBoard() {
+	public void printBoard() {
 		for (int[] arr : board) {
             System.out.println(Arrays.toString(arr));
         }
 	}
 	
 	
-	void initialFillCell() {
+	/*void initialFillCell() {
 		Random random = new Random();
 		int p1 = random.nextInt((int)Math.pow(sizeOfBoard,2));
 		int choice = Choices[random.nextInt(Choices.length)];
@@ -295,13 +296,7 @@ public class Game2048Model extends Observable implements Model {
 		currentScore+=choice;
 		
 		updateFreeCells();
-	}
-
-	@Override
-	public void addObs(Observer observer) {
-		// TODO Auto-generated method stub
-		
-	}
+	}*/
 	
 	public void updateFreeCells() {
 		lastFreeCell = 0;
@@ -315,6 +310,49 @@ public class Game2048Model extends Observable implements Model {
 			}
 	}
 	
-	// getScore() { // returns the score of the current board
+	@Override
+	public int[][] getData() {
+		return null;
+	}
+
+	public int[][] getBoard() {
+		return board;
+	}
+	 
+	public void setBoard(int[][] board) {
+		this.board = board;
+	}
+
+	@Override
+	public void notifyObservers() {
+		// TODO Auto-generated method stub
+		super.notifyObservers();
+	}
+
+	@Override
+	protected synchronized void setChanged() {
+		// TODO Auto-generated method stub
+		super.setChanged();
+	}
 	
+	public int getScore() { // returns the score of the current board
+		return currentScore;
+	}
+	
+	private boolean checkIfGameOver() {
+		for (int i=1 ; i<sizeOfBoard-1 ; i++)
+			for (int j=1 ; j<sizeOfBoard-1 ; j++) {
+				if (board[i][j]==board[i][j+1] || board[i][j]==board[i][j-1]
+						|| board[i][j]==board[i+1][j] || board[i-1][j]==board[i][j])
+					return true;
+			}
+		for (int i=0 ; i<sizeOfBoard-1 ; i++)
+			if (board[i][0]==board[i+1][0] || board[i][sizeOfBoard-1]==board[i+1][sizeOfBoard-1])
+				return true;
+		for (int j=0 ; j<sizeOfBoard-1 ; j++)
+			if (board[0][j]==board[0][j+1] || board[sizeOfBoard-1][j]==board[sizeOfBoard-1][j+1])
+				return true;
+		notifyObservers(); // add something to notify the game is over
+		return false;
+	}
 }
