@@ -1,5 +1,10 @@
 package view;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+
 public class Board extends Composite {
 
 	int N; 				//represents the size of the board N over N
