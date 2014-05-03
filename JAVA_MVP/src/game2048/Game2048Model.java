@@ -3,8 +3,8 @@ package game2048;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.Random;
+import java.util.Stack;
 
 import model.Model;
 
@@ -22,11 +22,14 @@ public class Game2048Model extends Observable implements Model {
 	private boolean isGameOver = false;
 	private boolean boardChanged = false;
 	
+	private Stack<State> states;
+	
 	// add a method to check if there are no neighbor matches - should be used when freeCells gets empty
 	
 
 	@Override
 	public void moveUp() {
+		
 		boardChanged = false;
 		System.out.println("move up");
 		for(int t=0; t<sizeOfBoard; t++)
@@ -36,8 +39,10 @@ public class Game2048Model extends Observable implements Model {
 			checkIfGameOver();
 		else if(fillRandomFreeCell())
 			boardChanged = true;
-		if (boardChanged)
-			notifyObservers();  /////
+		if (boardChanged) {
+			notifyObservers(); /////
+			pushState();
+		}
 	}
 
 	@Override
@@ -51,8 +56,10 @@ public class Game2048Model extends Observable implements Model {
 			checkIfGameOver();
 		else if(fillRandomFreeCell())
 			boardChanged = true;
-		if (boardChanged)
-			notifyObservers();  /////
+		if (boardChanged) {
+			notifyObservers(); /////
+			pushState();
+		}
 	}
 
 	@Override
@@ -66,8 +73,10 @@ public class Game2048Model extends Observable implements Model {
 			checkIfGameOver();
 		else if(fillRandomFreeCell())
 			boardChanged = true;
-		if (boardChanged)
-			notifyObservers();  /////
+		if (boardChanged) {
+			notifyObservers(); /////
+			pushState();
+		}
 	}
 
 	@Override
@@ -81,34 +90,26 @@ public class Game2048Model extends Observable implements Model {
 			checkIfGameOver();
 		else if(fillRandomFreeCell())
 			boardChanged = true;
-		if (boardChanged)
-			notifyObservers();  /////
+		if (boardChanged) {
+			notifyObservers(); /////
+			pushState();
+		}
 	}
 
 	public void initBoard() {
 		board = new int[sizeOfBoard][sizeOfBoard];
+		states = new Stack<State>();
 		currentScore = 0;
 		freeCells = new Point[(int)Math.pow(sizeOfBoard,2)];
 		initFreeCells();
 		
-		//initialFillCell();
 		lastFreeCell = (int)Math.pow(sizeOfBoard,2)-1;
 		fillRandomFreeCell();
 		fillRandomFreeCell();
-		/*lastFreeCell = 0;
 		
-		
-		for(int i=0;i<sizeOfBoard;i++)
-			for(int j=0;j<sizeOfBoard;j++) {
-				if ((board[i][j] != 2) && (board[i][j] != 4))
-				{
-					board[i][j] = 0;
-					freeCells[lastFreeCell].x = i;
-					freeCells[lastFreeCell].x = j;					
-					lastFreeCell++;
-				}
-			}*/
 		boardChanged = true;
+		notifyObservers(); /////
+		pushState();
 		
 	}
 	
@@ -320,10 +321,6 @@ public class Game2048Model extends Observable implements Model {
 			}
 	}
 	
-	@Override
-	public int[][] getData() {
-		return null;
-	}
 
 	public int[][] getBoard() {
 		return board;
@@ -366,4 +363,61 @@ public class Game2048Model extends Observable implements Model {
 		isGameOver = true;
 		return false;
 	}
+	
+	private void pushState() {
+		State s2 = new State();
+		boolean test = false;
+		if (!states.empty()){
+			test = true;
+			
+			s2 = states.peek();
+		}
+		State s1 = new State(board,currentScore);
+		/*s1.setBoard(board);
+		s1.setScore(currentScore);*/
+		states.push(s1);
+		// test
+		System.out.println("pushing score:"+currentScore);
+		if (test) {
+		System.out.println(s2.getScore());
+		System.out.println(s2.getBoard());
+		}
+	}
+	
+	public boolean undoMove() {
+		/*State s1,s2,s3 = new State();
+		s2 = new State(states.pop());
+		s3 = states.pop();
+		s1 = states.pop();
+		*/
+		State s2 = states.pop();
+		State s1 = states.pop();
+		//State s1 = new State(states.pop().getBoard(),states.pop().getScore());
+		board = s1.getBoard();
+		currentScore = s1.getScore();
+		boardChanged = true;
+		notifyObservers();
+		updateFreeCells();
+		return true;
+		
+	}
+
+	@Override
+	public int[][] getData() {
+		return board;
+	}
+
+	
+	/*
+	 public Stack<State> exportStateStack() {
+	 	return states;
+	 }
+	 
+	 public boolean setStateStack(Stack<State> importedState) {
+	 	states = importedState;
+	 	pop
+	 	board =
+	 	currentState = ....
+	 }
+	 */
 }

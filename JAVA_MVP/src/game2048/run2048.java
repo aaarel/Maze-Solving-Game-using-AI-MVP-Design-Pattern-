@@ -19,6 +19,8 @@ public class run2048 {
 		board1.printBoard();
 		board1.moveLeft();
 		board1.printBoard();
+		board1.undoMove();
+		board1.printBoard();
 	}
 
 }
