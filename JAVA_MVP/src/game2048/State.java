@@ -7,7 +7,8 @@ public class State {	// meant to keep track of states of the boards - for the un
 	public State(int[][] board, int score) {
 		super();
 		this.board = new int[sizeOfBoard][sizeOfBoard];
-		this.board = board;
+		for (int i = 0; i < sizeOfBoard; i++) 
+	        System.arraycopy(board[i], 0, this.board[i], 0, sizeOfBoard);
 		this.score = score;
 	}
 	

@@ -380,19 +380,13 @@ public class Game2048Model extends Observable implements Model {
 		System.out.println("pushing score:"+currentScore);
 		if (test) {
 		System.out.println(s2.getScore());
-		System.out.println(s2.getBoard());
+		//System.out.println(s2.getBoard());
 		}
 	}
 	
 	public boolean undoMove() {
-		/*State s1,s2,s3 = new State();
-		s2 = new State(states.pop());
-		s3 = states.pop();
-		s1 = states.pop();
-		*/
 		State s2 = states.pop();
 		State s1 = states.pop();
-		//State s1 = new State(states.pop().getBoard(),states.pop().getScore());
 		board = s1.getBoard();
 		currentScore = s1.getScore();
 		boardChanged = true;
