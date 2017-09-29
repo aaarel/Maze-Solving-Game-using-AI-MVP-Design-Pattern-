@@ -1,4 +1,5 @@
-Task3_JAVA
-==========
+Maze Solving Game using AI (MVP Design Pattern)
 
-Task3_JAVA
+(Java 7 based)
+
+Maze Solving Game using AI (MVP Design Pattern)
